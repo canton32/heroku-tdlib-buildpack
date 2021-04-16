@@ -83,12 +83,12 @@ export CXXFLAGS="-stdlib=libc++"
 export CC=$BUILD_DIR/.apt/usr/bin/clang 
 export CXX=$BUILD_DIR/.apt/usr/bin/clang++ 
 
-$BUILD_DIR/.apt/usr/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-$BUILD_DIR/.apt/usr/bin/cmake --build . --target prepare_cross_compiling
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+cmake --build . --target prepare_cross_compiling
 cd ..
 php SplitSource.php
 cd build
-$BUILD_DIR/.apt/usr/bin/cmake --build . --target install
+cmake --build . --target install
 cd ..
 php SplitSource.php --undo
 cd ..
