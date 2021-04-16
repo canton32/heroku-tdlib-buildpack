@@ -29,6 +29,8 @@ function indent() {
 
 ls -R $BUILD_DIR/.apt/
 
+hash -r
+
 mkdir -p $BUILD_DIR/.tdlib
 
 git clone https://github.com/tdlib/td.git
