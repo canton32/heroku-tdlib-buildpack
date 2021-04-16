@@ -76,7 +76,6 @@ echo "export PATH=\"\$PATH:$BUILD_DIR/.heroku/cmake/bin\"" > $BP_DIR/export
 echo "Testing binary" | indent
 $BUILD_DIR/.heroku/cmake/bin/cmake --version
 
-
 hash -r
 
 mkdir -p $BUILD_DIR/.tdlib
@@ -86,8 +85,8 @@ cd td
 rm -rf build
 mkdir build
 cd build
-$BUILD_DIR/.heroku/cmake/bin -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-$BUILD_DIR/.heroku/cmake/bin --build . --target install
+$BUILD_DIR/.heroku/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+$BUILD_DIR/.heroku/cmake/bin/cmake --build . --target install
 cd ..
 cd ..
 ls -l td/tdlib
