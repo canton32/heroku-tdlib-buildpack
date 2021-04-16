@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+# fail fast
+set -e
+
+# debug
+# set -x
+
+# parse and derive params
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+LP_DIR=`cd $(dirname $0); cd ..; pwd`
+
+function error() {
+  echo " !     $*" >&2
+  exit 1
+}
+
+function topic() {
+  echo "-----> $*"
+}
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+#
+# PACKAGES="make git zlib1g-dev libssl-dev gperf php cmake clang libc++-dev"
+#
+# APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+# APT_STATE_DIR="$CACHE_DIR/apt/state"
+#
+# mkdir -p "$APT_CACHE_DIR/archives/partial"
+# mkdir -p "$APT_STATE_DIR/lists/partial"
+#
+# APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+#
+# case "$STACK" in
+#   "cedar-14")
+#     APT_FLAGS="--force-yes"
+#     ;;
+#   "heroku-16" | "heroku-18")
+#     APT_FLAGS="--allow-downgrades --allow-remove-essential --allow-change-held-packages"
+#     ;;
+#   *)
+#     error "STACK must be 'cedar-14', 'heroku-16', or 'heroku-18'"
+# esac
+#
+#
+#
+# topic "Updating apt caches"
+# apt-get $APT_OPTIONS update | indent
+# apt-get $APT_OPTIONS upgrade | indent
+# apt-get $APT_OPTIONS -y $APT_FLAGS install $PACKAGES | indent
+
+# for PACKAGE in $PACKAGES; do
+#   if [[ $PACKAGE == *deb ]]; then
+#     PACKAGE_NAME=$(basename $PACKAGE .deb)
+#     PACKAGE_FILE=$APT_CACHE_DIR/archives/$PACKAGE_NAME.deb
+#
+#     topic "Fetching $PACKAGE"
+#     curl -s -L -z $PACKAGE_FILE -o $PACKAGE_FILE $PACKAGE 2>&1 | indent
+#   else
+#     topic "Fetching .debs for $PACKAGE"
+#     apt-get $APT_OPTIONS -y $APT_FLAGS install --reinstall $PACKAGE | indent
+#   fi
+# done
+
+# mkdir -p $BUILD_DIR/.apt
+#
+# for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+#   topic "Installing $(basename $DEB)"
+#   dpkg -x $DEB $BUILD_DIR/.apt/
+# done
+
+ls -R $BUILD_DIR/.apt/
+
+# apt list --installed
+# dpkg -L cmake
+
+mkdir -p $BUILD_DIR/.tdlib
+
+git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
+cd $BUILD_DIR/.tdlib
+rm -rf build
+mkdir build
+cd build
+export CXXFLAGS="-stdlib=libc++"
+CC=$BUILD_DIR/.apt/usr/bin/clang CXX=$BUILD_DIR/.apt/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+cmake --build . --target prepare_cross_compiling
+cd ..
+php SplitSource.php
+cd build
+cmake --build . --target install
+cd ..
+php SplitSource.php --undo
+cd ..
+ls -l td/tdlib
