@@ -7,6 +7,7 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
 
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
@@ -27,7 +28,16 @@ function indent() {
   esac
 }
 
-ls -R $BUILD_DIR/.apt/
+mkdir -p "$BUILD_DIR/.heroku/cmake/"
+mv ${BUILD_DIR%.*.*}/bin "$BUILD_DIR/.heroku/cmake/"
+mv ${BUILD_DIR%.*.*}/share "$BUILD_DIR/.heroku/cmake/"
+
+echo "Exporting PATH" | indent
+echo "export PATH=\"\$PATH:$BUILD_DIR/.heroku/cmake/bin\"" > $BP_DIR/export
+
+echo "Testing binary" | indent
+$BUILD_DIR/.heroku/cmake/bin/cmake --version
+
 
 hash -r
 
@@ -38,8 +48,10 @@ cd td
 rm -rf build
 mkdir build
 cd build
-$BUILD_DIR/.apt/usr/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-$BUILD_DIR/.apt/usr/bin/cmake --build . --target install
+$BUILD_DIR/.heroku/cmake/bin -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+$BUILD_DIR/.heroku/cmake/bin --build . --target install
 cd ..
 cd ..
 ls -l td/tdlib
+
+
