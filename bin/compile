@@ -68,8 +68,7 @@ cd $BUILD_DIR/.tdlib
 rm -rf build
 mkdir build
 cd build
-export CXXFLAGS="-stdlib=libc++"
-CC=$BUILD_DIR/.apt/usr/bin/clang CXX=$BUILD_DIR/.apt/usr/bin/clang++ $BUILD_DIR/.heroku/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+CXXFLAGS="-stdlib=libc++" CC=$BUILD_DIR/.apt/usr/bin/clang CXX=$BUILD_DIR/.apt/usr/bin/clang++ $BUILD_DIR/.heroku/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
 $BUILD_DIR/.heroku/cmake/bin/cmake --build . --target prepare_cross_compiling
 cd ..
 php SplitSource.php
