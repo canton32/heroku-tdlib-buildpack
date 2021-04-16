@@ -34,13 +34,19 @@ ls -R $BUILD_DIR/.apt/
 
 mkdir -p $BUILD_DIR/.tdlib
 
-git clone https://github.com/tdlib/td.git
-cd td
+git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
+cd $BUILD_DIR/.tdlib
 rm -rf build
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+export CXXFLAGS="-stdlib=libc++"
+CC=$BUILD_DIR/.apt/usr/bin/clang CXX=$BUILD_DIR/.apt/usr/bin/clang++ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+cmake --build . --target prepare_cross_compiling
+cd ..
+php SplitSource.php
+cd build
 cmake --build . --target install
 cd ..
+php SplitSource.php --undo
 cd ..
 ls -l td/tdlib
