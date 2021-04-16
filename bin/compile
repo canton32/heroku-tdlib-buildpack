@@ -60,3 +60,24 @@ echo "export PATH=\"\$PATH:$BUILD_DIR/.heroku/cmake/bin\"" > $BP_DIR/export
 
 echo "Testing binary" | indent
 $BUILD_DIR/.heroku/cmake/bin/cmake --version
+
+mkdir -p $BUILD_DIR/.tdlib
+
+git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
+cd $BUILD_DIR/.tdlib
+rm -rf build
+mkdir build
+cd build
+export CXXFLAGS="-stdlib=libc++"
+export CC=$BUILD_DIR/.apt/usr/bin/clang
+export CXX=$BUILD_DIR/.apt/usr/bin/clang++ 
+$BUILD_DIR/.heroku/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+$BUILD_DIR/.heroku/cmake/bin/cmake --build . --target prepare_cross_compiling
+cd ..
+php SplitSource.php
+cd build
+$BUILD_DIR/.heroku/cmake/bin/cmake --build . --target install
+cd ..
+php SplitSource.php --undo
+cd ..
+ls -l td/tdlib
