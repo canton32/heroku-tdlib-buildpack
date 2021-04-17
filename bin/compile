@@ -37,6 +37,8 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 export CMAKE_ROOT="$BUILD_DIR/.apt/usr/bin:$PATH"
 
 mkdir -p $BUILD_DIR/.tdlib
+ls -R $BUILD_DIR/.apt/
+cmake --version
 
 git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
 cd $BUILD_DIR/.tdlib
