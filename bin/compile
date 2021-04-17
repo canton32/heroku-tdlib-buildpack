@@ -15,7 +15,8 @@ ENV_DIR=$3
 mkdir -p $BUILD_DIR/.tdlib
 
 cd $BUILD_DIR/.tdlib
-git clone https://github.com/tdlib/td.git
+git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
+cd $BUILD_DIR/.tdlib
 
 rm -rf build
 mkdir build
