@@ -21,4 +21,4 @@ mkdir -p ./app/tdlib/test
 mkdir -p $BUILD_DIR/.tdlib
 
 
-ls -l ./app/tdlib
+ls -R ./app
