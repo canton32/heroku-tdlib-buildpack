@@ -17,15 +17,8 @@ ls -R $BUILD_DIR/.apt/
 
 mkdir -p ./app/tdlib
 
+mkdir -p ./app/tdlib/test
 mkdir -p $BUILD_DIR/.tdlib
 
-cd $BUILD_DIR/.tdlib
-git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
-
-rm -rf build
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=./app/tdlib ..
-cmake --build . --target install
 
 ls -l ./app/tdlib
