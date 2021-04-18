@@ -18,7 +18,7 @@ mkdir -p $BUILD_DIR/.tdlib
 
 cd $BUILD_DIR/.tdlib
 git clone https://github.com/tdlib/td.git $BUILD_DIR/.tdlib
-cd td
+
 rm -rf build
 mkdir build
 cd build
