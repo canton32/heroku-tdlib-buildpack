@@ -26,4 +26,4 @@ cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
 cmake --build . --target install  $BUILD_DIR/tdlib_output
 
 cd $BUILD_DIR/tdlib_output
-cp -r .$BUILD_DIR/tdlib_output/tdlib /app/tdlib
+cp -r $BUILD_DIR/tdlib_output/tdlib /app/tdlib
