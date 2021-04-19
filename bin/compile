@@ -13,9 +13,8 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-mkdir -p /app/tdlib
-
 mkdir -p $BUILD_DIR/tdlib
+mkdir -p $BUILD_DIR/tdlib_output
 
 cd $BUILD_DIR/tdlib
 git clone https://github.com/tdlib/td.git $BUILD_DIR/tdlib
@@ -24,7 +23,7 @@ rm -rf build
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
-cmake --build . --target install  /app/tdlib
+cmake --build . --target install  $BUILD_DIR/tdlib_output
 
-cd /
-ls -R /app
+cd $BUILD_DIR/tdlib_output
+cp -r .$BUILD_DIR/tdlib_output/tdlib /app/tdlib
