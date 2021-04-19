@@ -23,8 +23,8 @@ git clone https://github.com/tdlib/td.git $BUILD_DIR/tdlib
 rm -rf build
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../../../../app/tdlib ..
-cmake --build . --target install
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib ..
+cmake --build . --target install  -DCMAKE_INSTALL_PREFIX:PATH=/app/tdlib
 
 cd /
 ls -R /app
